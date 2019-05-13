@@ -4,7 +4,7 @@
 * pip3
 
 ### Design Document
-[link here]()
+[link here](https://drive.google.com/drive/folders/1wc1ggQuIj61BuqFYHF8bx3vWkFf4LDhJ)
 
 ### Server - Client
 
