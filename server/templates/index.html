@@ -1,0 +1,99 @@
+<html>
+<head>
+    <title>Control Robot</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <div class="status">
+        <h3>List robots</h3>
+        <div id="online_robots"></div>
+    </div>
+
+    <div class="send_command">
+        <h3>Send command to robot</h3>
+        <input type="text" id="robot_id" placeholder="Enter robot id">
+        <div>
+            <button class="button" id="moveForward">Forward</button>
+            <button class="button" id="moveBackward">Backward</button>
+            <button class="button" id="turnRight">Right</button>
+            <button class="button" id="turnLeft">Left</button>
+            <button class="button" id="pick">Pick object</button>
+            <button class="button" id="drop">Drop object</button>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Change this base on host ip network address 
+        var host = '192.168.1.188'
+        var socket = io.connect('http://'+host+':5000/');
+        
+        socket.on('connect', function() {
+            socket.send('User has connected!');
+        });
+
+        $('#moveForward').on('click', function() {
+            robot_id = $('#robot_id').val();
+            request_object = {
+                'robot_id': robot_id,
+                'command': 'move_forward'
+            }
+            socket.emit('client_command', request_object);
+        });
+
+        $('#moveBackward').on('click', function() {
+            robot_id = $('#robot_id').val();
+            request_object = {
+                'robot_id': robot_id,
+                'command': 'move_backward'
+            }
+            socket.emit('client_command', request_object);
+        });
+
+        $('#turnRight').on('click', function() {
+            robot_id = $('#robot_id').val();
+            request_object = {
+                'robot_id': robot_id, 
+                'command': 'move_right'
+            }
+            socket.emit('client_command', request_object);
+        });
+
+        $('#turnLeft').on('click', function() {
+            robot_id = $('#robot_id').val();
+            request_object = {
+                'robot_id': robot_id, 
+                'command': 'move_left'
+            }
+            socket.emit('client_command', request_object);
+        });
+
+        $('#pick').on('click', function() {
+            robot_id = $('#robot_id').val();
+            request_object = {
+                'robot_id': robot_id, 
+                'command': 'pick'
+            }
+            socket.emit('client_command', request_object);
+        });
+
+        $('#drop').on('click', function() {
+            robot_id = $('#robot_id').val();
+            request_object = {
+                'robot_id': robot_id, 
+                'command': 'drop'
+            }
+            socket.emit('client_command', request_object);
+        });
+
+        socket.on('server_update_status', function(data) {
+            console.log('server_update_status: '+data)
+            msg = JSON.stringify(data);
+            $('#online_robots').html(msg);
+        });
+    });
+</script>
+</body>
+</html>
