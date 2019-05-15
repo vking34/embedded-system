@@ -3,8 +3,6 @@ from flask_socketio import SocketIO, emit, join_room, rooms
 from auto import *
 import cv2
 
-
-# Change this base on host ip network address
 host = '0.0.0.0'
 port = 80
 
@@ -24,7 +22,6 @@ is_finished = False
 #======================================================================
 # Server get any connect or disconnect request, then update the online 
 # list to client
-
 
 @socketio.on('connect')
 def connect():
@@ -155,7 +152,7 @@ def robot_update_status(request):
 
     emit('server_update_status', status_dict, broadcast=True)
 
-    # Command robot to go on
+    # When robot stop, command robot to go on
     if robot_status == 0:
         # not reach the destination yet
         if current_index < len(path) - 2:
@@ -179,7 +176,7 @@ def robot_update_status(request):
             command_robot_auto(commands, path[current_index], robot_id)
 
         # robot picked object and come back
-        else:
+        elif current_index == len(path) - 1:
             if is_finished is False:
                 print('come back...')
                 current_index = 0
@@ -195,11 +192,11 @@ def robot_update_status(request):
 
 def generate_frame():
     # for external camera app
-    camera_ip = '192.168.1.167'
-    cap = cv2.VideoCapture('http://' + camera_ip + ':8080/video')
+    # camera_ip = '192.168.1.167'
+    # cap = cv2.VideoCapture('http://' + camera_ip + ':8080/video')
 
     # for webcam
-    # cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(0)
 
     while True:
         ret, frame = cap.read()

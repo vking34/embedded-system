@@ -111,7 +111,7 @@
             robot_id = $('#robot_id').val();
             request_object = {
                 'robot_id': robot_id, 
-                'command': 'turn_right'
+                'command': 'move_right'
             };
             socket.emit('client_command', request_object);
         });
@@ -120,8 +120,8 @@
             robot_id = $('#robot_id').val();
             request_object = {
                 'robot_id': robot_id, 
-                'command': 'turn_left'
-            }
+                'command': 'move_left'
+            };
             socket.emit('client_command', request_object);
         });
 
@@ -130,7 +130,7 @@
             request_object = {
                 'robot_id': robot_id, 
                 'command': 'pick'
-            }
+            };
             socket.emit('client_command', request_object);
         });
 
