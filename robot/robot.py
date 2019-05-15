@@ -5,11 +5,12 @@ import json
 sio = socketio.Client()
 
 # Change this base on host ip network address 
-host = '192.168.1.188'
+host = 'localhost'
+port = '80'
 
 robot = {}
 robot['id'] = sys.argv[1]   # unique robot id
-robot['direction'] = 0  # 4 directions
+# robot['direction'] = 0  # 4 directions
 robot['x'] = 0
 robot['y'] = 0  
 robot['status'] = 0 # 0 is not busy, 1 is busy
@@ -24,13 +25,12 @@ else:
 
 
 def get_robot_status():
-    print(robot['status'])
+    # print(robot['status'])
     response_object = {
         'robot_id': robot['id'],
-        'robot_direction': robot['direction'],
         'robot_x_pos': robot['x'],
         'robot_y_pos': robot['y'],
-        'robot_status': robot['status'],
+        'robot_status': robot['status']
     }
     return response_object
     
@@ -48,23 +48,40 @@ def on_disconnect():
     print('disconnected to server')
 
 
+@sio.on('init_robot')
+def init_robot(data):
+    print('init robot...')
+    robot['x'] = data.get('x_start_point')
+    robot['y'] = data.get('y_start_point')
+    response_object = get_robot_status()
+    sio.emit('robot_status', response_object)
+
+
 @sio.on('server_command_robot')
 def process_command(request):
-    if robot['status'] == 0:
-        # At first, notify all client that robot is busy
+    # if robot['status'] == 0:
+        # receive commands and move
         robot['status'] = 1
         response_object = get_robot_status()
         sio.emit('robot_status', response_object)
         
-        command = request.get('command')
-        print(">>> command from server: ", command)
-        direction, x_pos, y_pos = command_robot(command)
-        
+        commands = request.get('commands')
+        print(">>> command from server: ", commands)
+        # direction, x_pos, y_pos = command_robot(command)
+
+        for command in commands:
+            command_robot(command)
+
         # After finish, send robot status to client
         robot['status'] = 0
+        if request.get('next_point') is not None:
+            next_point = request.get('next_point')
+            robot['x'] = next_point[0]
+            robot['y'] = next_point[1]
+
         response_object = get_robot_status()
         sio.emit('robot_status', response_object)
 
 
-sio.connect('http://'+host+':5000')
+sio.connect('http://'+host+':'+ port)
 sio.wait()

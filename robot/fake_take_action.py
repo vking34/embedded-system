@@ -3,37 +3,37 @@ from time import sleep
 
 def moveForward():
     print("move forward")
-    sleep(0.2)
+    sleep(1)
     
 
 def moveBackward():
     print("move backward")
-    sleep(0.2)
+    sleep(1)
     
 
 def turnLeft():
     print("turn left")
-    sleep(0.2)
+    sleep(1)
    
 
 def turnRight():
     print("turn right")
-    sleep(0.2)
+    sleep(1)
 
 
 def handUp():
     print("hand up")
-    sleep(0.5)
+    sleep(1)
     
 
 def handDown():
     print("hand down")
-    sleep(0.5)
+    sleep(1)
 
 
 def turn_degree(angle):
     print("turn degree ", angle)
-    sleep(0.5)
+    sleep(1)
 
 
 def PIDControl():
@@ -43,7 +43,7 @@ def PIDControl():
 
 def moveOutOfGreen():
     print("move out of green")
-    sleep(0.1)
+    sleep(1)
 
 
 def command_robot(command):
@@ -86,7 +86,7 @@ def command_robot(command):
         handDown()
         moveBackward()
     elif command == "beep":
-        sound.beep()
+        # sound.beep()
         return True
     return False
 
