@@ -33,8 +33,6 @@ def get_robot_status():
         'robot_status': robot['status']
     }
     return response_object
-    
-
 
 @sio.on('connect')
 def on_connect():
@@ -59,7 +57,7 @@ def init_robot(data):
 
 @sio.on('server_command_robot')
 def process_command(request):
-    # if robot['status'] == 0:
+    if robot['status'] == 0:
         # receive commands and move
         robot['status'] = 1
         response_object = get_robot_status()
@@ -74,10 +72,10 @@ def process_command(request):
 
         # After finish, send robot status to client
         robot['status'] = 0
-        if request.get('next_point') is not None:
-            next_point = request.get('next_point')
-            robot['x'] = next_point[0]
-            robot['y'] = next_point[1]
+
+        next_point = request.get('next_point')
+        robot['x'] = next_point[0]
+        robot['y'] = next_point[1]
 
         response_object = get_robot_status()
         sio.emit('robot_status', response_object)

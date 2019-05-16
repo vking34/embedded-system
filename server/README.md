@@ -15,7 +15,9 @@
     
 + Run:
     + if using Laptop Webcam, in function _generate_frame()_ of _app.py_, comment all lines in _external camera app_ part
-    + if using external camera, comment all lines in _webcam_ part
+    + if using external camera, comment all lines in _webcam_ part. Camera app must be __in the same private network__ with Server. __camera_ip__ must appear on the screen when open app:
+        + Android: Open App -> Roll Down to the bottom -> Click "Start Server"
+        + iOS: Open App -> Click "Camera" (ignore the port on screen, 8080 still)
     + execute:
         ```
         $ python app.py

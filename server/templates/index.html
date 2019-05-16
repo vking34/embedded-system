@@ -17,6 +17,11 @@
     <div class="send_command">
         <h3>Send command to robot</h3>
         <input type="text" id="robot_id" placeholder="Enter robot id">
+        <p>Starting Direction: </p>
+        <input type="text" id="start_point" placeholder="x1,y1 (Starting Point)">
+        <br/>
+        <input type="text" id="head_point" placeholder="x2,y2 (Heading Point)">
+        <br/>
         <br>
         <button class="button" id="auto_mode">Auto Mode</button>
         <button class="button" id="manual_mode">Manual Mode</button>
@@ -24,19 +29,17 @@
 
         <!-- auto mode -->
         <div id="auto_content">
-        <p>Starting Direction: </p>
-        <input type="text" id="start_point" placeholder="x1,y1 (Starting Point)">
-        <br/>
-        <input type="text" id="head_point" placeholder="x2,y2 (Heading Point)">
-        <br/>
         <p>Target Point: </p>
         <input type="text" id="target_point" placeholder="x3,y3 (Map size : 3,5)">
         <br/>
-        <button class="button" id="point_submit">Submit</button>
+        <button class="button" id="point_auto_submit">Submit</button>
         </div>
 
         <!-- manual mode -->
         <div id="manual_content">
+            <br>
+            <button class="button" id="point_manual_submit">Submit</button>
+            <br>
             <button class="button" id="moveForward">Forward</button>
             <button class="button" id="moveBackward">Backward</button>
             <button class="button" id="turnRight">Right</button>
@@ -75,7 +78,20 @@
             $('#manual_content').show();
         });
 
-        $('#point_submit').click (() => {
+        $('#point_manual_submit').click(() => {
+            robot_id = $('#robot_id').val();
+            start_point = $('#start_point').val();
+            head_point = $('#head_point').val();
+            let payload = {
+               start_point,
+               head_point,
+               robot_id
+            };
+
+            socket.emit('init_manual_points', payload);
+        });
+
+        $('#point_auto_submit').click (() => {
            start_point = $('#start_point').val();
            head_point = $('#head_point').val();
            target_point = $('#target_point').val();
@@ -86,14 +102,14 @@
                target_point,
                robot_id
            };
-           socket.emit('init_points', payload);
+           socket.emit('init_auto_points', payload);
         });
 
         $('#moveForward').on('click', function() {
             robot_id = $('#robot_id').val();
             request_object = {
                 'robot_id': robot_id,
-                'command': 'move_forward'
+                'commands': ['move_forward']
             };
             socket.emit('client_command', request_object);
         });
@@ -102,7 +118,7 @@
             robot_id = $('#robot_id').val();
             request_object = {
                 'robot_id': robot_id,
-                'command': 'move_backward'
+                'commands': ['move_backward']
             };
             socket.emit('client_command', request_object);
         });
@@ -111,7 +127,7 @@
             robot_id = $('#robot_id').val();
             request_object = {
                 'robot_id': robot_id, 
-                'command': 'move_right'
+                'commands': ['turn_right', 'move_forward']
             };
             socket.emit('client_command', request_object);
         });
@@ -120,7 +136,7 @@
             robot_id = $('#robot_id').val();
             request_object = {
                 'robot_id': robot_id, 
-                'command': 'move_left'
+                'commands': ['turn_left', 'move_forward']
             };
             socket.emit('client_command', request_object);
         });
@@ -129,7 +145,7 @@
             robot_id = $('#robot_id').val();
             request_object = {
                 'robot_id': robot_id, 
-                'command': 'pick'
+                'commands': ['pick']
             };
             socket.emit('client_command', request_object);
         });
@@ -138,7 +154,7 @@
             robot_id = $('#robot_id').val();
             request_object = {
                 'robot_id': robot_id, 
-                'command': 'drop'
+                'commands': ['drop']
             };
             socket.emit('client_command', request_object);
         });

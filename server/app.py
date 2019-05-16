@@ -13,6 +13,7 @@ socketio = SocketIO(app)
 
 # global vars
 status_dict = {}
+manual_dict = {}
 command_list = list()
 path = list()
 current_index = 0   # current position : path[current_index]
@@ -46,8 +47,8 @@ def disconnect():
 # In auto mode, we have to initialize starting point, head point, and target point
 # head point is the point right in front of robot
 # in other word, the init direction of robot is starting point -> head point
-@socketio.on('init_points')
-def init_point(data):
+@socketio.on('init_auto_points')
+def init_auto_point(data):
     print(data)
     start_point = data.get('start_point')
     head_point = data.get('head_point')
@@ -87,6 +88,37 @@ def init_point(data):
     command_robot_auto(command_list[current_index], path[current_index+1], robot_id)
 
 
+@socketio.on('init_manual_points')
+def init_manual_point(data):
+    print(data)
+    start_point = data.get('start_point')
+    head_point = data.get('head_point')
+    robot_id = data.get('robot_id')
+
+    xy_start_point = start_point.split(',')
+    x_start_point = int(xy_start_point[0])
+    y_start_point = int(xy_start_point[1])
+
+    xy_head_point = head_point.split(',')
+    x_head_point = int(xy_head_point[0])
+    y_head_point = int(xy_head_point[1])
+
+    payload = {
+        'x_start_point': x_start_point,
+        'y_start_point': y_start_point
+    }
+
+    emit('init_robot', payload, room=robot_id)
+
+    start_point = (x_start_point, y_start_point)
+    head_point = (x_head_point, y_head_point)
+
+    manual_dict[robot_id] = {
+        'start_point': start_point,
+        'head_point': head_point
+    }
+
+
 #=======================================================================
 # Server take request from client
 
@@ -94,9 +126,9 @@ def init_point(data):
 def client_command(request):
     print('client command')
     robot_id = request.get('robot_id')
-    command = request.get('command')
+    commands = request.get('commands')
 
-    commands = [command]
+    # commands = [command]
 
     print(request)
     command_robot_manual(commands, robot_id)
@@ -116,13 +148,23 @@ def command_robot_auto(commands, next_point, robot_id):
     print(payload)
     emit('server_command_robot', payload, room=robot_id)
 
+
 # Server process the request from client and then send command to robot
 def command_robot_manual(commands, robot_id):
+    start_point = manual_dict[robot_id].get('start_point')
+    head_point = manual_dict[robot_id].get('head_point')
+    command = commands[0]
+    next_point, new_head_point = get_next_point(start_point, head_point, command)
+
     payload = {
-        'commands': commands
+        'commands': commands,
+        'next_point': next_point
     }
     print(payload)
     emit('server_command_robot', payload, room=robot_id)
+
+    manual_dict[robot_id]['start_point'] = next_point
+    manual_dict[robot_id]['head_point'] = new_head_point
 
 #======================================================================
 
@@ -181,8 +223,8 @@ def robot_update_status(request):
                 print('come back...')
                 current_index = 0
                 path_length = len(path)
-                # head_point = get_head_point(path[path_length - 2], path[path_length -1])
-                command_list, path = run(path[path_length-1], path[path_length-2], path[0])
+                head_point = get_head_point(path[path_length - 1])
+                command_list, path = run(path[path_length-1], head_point, path[0])
                 print(command_list)
                 print(path)
                 command_robot_auto(command_list[current_index], path[current_index + 1], robot_id)
