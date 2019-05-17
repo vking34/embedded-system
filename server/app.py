@@ -14,11 +14,12 @@ socketio = SocketIO(app)
 # global vars
 status_dict = {}
 manual_dict = {}
-command_list = list()
-path = list()
-current_index = 0   # current position : path[current_index]
-is_picking = False
-is_finished = False
+auto_dict = {}
+# command_list = list()
+# path = list()
+# current_index = 0   # current position : path[current_index]
+# is_picking = False
+# is_finished = False
 
 #======================================================================
 # Server get any connect or disconnect request, then update the online 
@@ -78,9 +79,19 @@ def init_auto_point(data):
 
     emit('init_robot', payload, room=robot_id)
 
-    global current_index, path, command_list
+    # global current_index, path, command_list
 
+    print('start point: ' + str(start_point))
+    print('head point: ' + str(head_point))
     command_list, path = run(start_point, head_point, target_point)
+    current_index = 0
+    auto_dict[robot_id] = {
+        'command_list': command_list,
+        'path': path,
+        'current_index': current_index,
+        'is_picking': False,
+        'is_finished': False
+    }
 
     print(command_list)
     print(path)
@@ -174,7 +185,7 @@ def command_robot_manual(commands, robot_id):
 
 @socketio.on('robot_status')
 def robot_update_status(request):
-    global current_index, path, command_list, is_picking, is_finished
+    # global current_index, path, command_list, is_picking, is_finished
 
     robot_id = request.get('robot_id')
     # robot_direction = request.get('robot_direction')
@@ -194,37 +205,68 @@ def robot_update_status(request):
 
     emit('server_update_status', status_dict, broadcast=True)
 
+    try:
+        robot = auto_dict[robot_id]
+    except KeyError:
+        return
+
+    current_index = auto_dict[robot_id]['current_index']
+    command_list = auto_dict[robot_id]['command_list']
+    path = auto_dict[robot_id]['path']
+    is_picking = auto_dict[robot_id]['is_picking']
+    is_finished = auto_dict[robot_id]['is_finished']
+
+    print(current_index)
     # When robot stop, command robot to go on
     if robot_status == 0:
         # not reach the destination yet
-        if current_index < len(path) - 2:
+        path_length = len(path)
+        if current_index < path_length - 1:
+
             current_index += 1
+            auto_dict[robot_id]['current_index'] = current_index
             print(current_index)
-            print('command robot: ' + str(command_list[current_index]))
-            command_robot_auto(command_list[current_index], path[current_index+1], robot_id)
+
+            try:
+
+                next_point = path[current_index+1]
+            except IndexError:
+                next_point = path[current_index]
+
+            try:
+                command = command_list[current_index]
+                command_robot_auto(command, next_point, robot_id)
+            except IndexError:
+                return
 
         # robot reached the destination and pick object
-        elif current_index == len(path) - 2:
+        elif current_index == path_length - 1:
             current_index += 1
+            auto_dict[robot_id]['current_index'] = current_index
             print(current_index)
             print('robot' + robot_id + ' reached destination')
             if is_picking is False:
                 commands = ['pick']
                 is_picking = True
+                auto_dict[robot_id]['is_picking'] = is_picking
             else:
                 commands = ['drop']
                 is_finished = True
+                auto_dict[robot_id]['is_finished'] = is_finished
 
-            command_robot_auto(commands, path[current_index], robot_id)
+            command_robot_auto(commands, path[current_index - 2], robot_id)
 
         # robot picked object and come back
-        elif current_index == len(path) - 1:
+        elif current_index == path_length:
             if is_finished is False:
                 print('come back...')
                 current_index = 0
+                auto_dict[robot_id]['current_index'] = current_index
                 path_length = len(path)
                 head_point = get_head_point(path[path_length - 1])
                 command_list, path = run(path[path_length-1], head_point, path[0])
+                auto_dict[robot_id]['command_list'] = command_list
+                auto_dict[robot_id]['path'] = path
                 print(command_list)
                 print(path)
                 command_robot_auto(command_list[current_index], path[current_index + 1], robot_id)

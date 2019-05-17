@@ -17,7 +17,7 @@ color = ColorSensor()
 gyro = GyroSensor()
 
 def is_green(red, green, blue):
-    return red in range(0, 150) and green in range(150, 256) and blue in range(0, 150)
+    return red in range(0, 100) and green in range(100, 256) and blue in range(0, 100)
 
 
 def moveForward(time):
@@ -88,7 +88,7 @@ def turn_degree(angle):
 
 
 def PIDControl():
-    expectation_red = 95
+    expectation_red = 80
     last_error = 0
     kp = 0.05
     ki = 0
@@ -186,41 +186,51 @@ def command_robot(command):
         moveOutOfGreen()
         PIDControl()
         return True
-    elif command == "move_left":
-        moveOutOfGreen()
-        moveBackward(0.1)
-        
-        turn_degree(-92)    # turn left
-
-        moveOutOfGreen()
-        PIDControl()
-        return True
-    elif command == "move_right":
-        moveOutOfGreen()
-        moveBackward(0.2)
-
-        turn_degree(87)       # turn right
-
-        moveOutOfGreen()
-        PIDControl()
-        return True
     elif command == "pick":
         handUp(0.5)
+        moveOutOfGreen()
+        moveBackward(0.1)
+
+        turn_degree(-92)    # turn left
+        turn_degree(-92)    # turn left
     elif command == "drop":
         handDown(0.5)
+        moveOutOfGreen()
+        moveBackward(0.1)
+
+        turn_degree(-92)    # turn left
+        turn_degree(-92)    # turn left
     elif command == "beep":
         # sound.beep()
         return True
     elif command == "turn_right":
         moveOutOfGreen()
-        moveBackward(0.2)
+        moveBackward(0.05)
 
         turn_degree(87)       # turn right
     elif command == "turn_left":
         moveOutOfGreen()
-        moveBackward(0.1)
+        moveBackward(0.15)
         
         turn_degree(-92)    # turn left
+    # elif command == "move_left":
+    #     moveOutOfGreen()
+    #     moveBackward(0.1)
+        
+    #     turn_degree(-92)    # turn left
+
+    #     moveOutOfGreen()
+    #     PIDControl()
+    #     return True
+    # elif command == "move_right":
+    #     moveOutOfGreen()
+    #     moveBackward(0.2)
+
+    #     turn_degree(87)       # turn right
+
+    #     moveOutOfGreen()
+    #     PIDControl()
+    #     return True
     return False
 
 
