@@ -47,11 +47,22 @@ def get_command(current_direction, next_direction):
 
 def get_path(starting_point, destination_point): # path must follow the line ( no diagonal )
     astar_path = astar(maze, starting_point, destination_point)
-    for i in range(0, len(astar_path)):
-        point = astar_path[i]
-        next_point =astar_path[i+1]
+    # print(astar_path)
+    i = 0
+    point = astar_path[i]
+    next_point = astar_path[i + 1]
+    while next_point is not None:
+
         if point[0] != next_point[0] and point[1] != next_point[1]:
             astar_path.insert(i+1, (point[0], next_point[1]))
+
+        i += 1
+        try:
+            point = astar_path[i]
+            next_point = astar_path[i + 1]
+
+        except IndexError:
+            break
     return astar_path
 
 def run(starting_point, starting_headto_point, destination_point):
@@ -66,7 +77,7 @@ def run(starting_point, starting_headto_point, destination_point):
         else:
             break
         next_direction = get_direction(current_point, next_point)
-        print('next direction is: %s' %next_direction)
+        # print('next direction is: %s' %next_direction)
         command = get_command(current_direction, next_direction)
         command_list.append(command)
         headto_point = ()
@@ -198,21 +209,21 @@ def get_next_point(start_point, head_point, command):
     return next_point, new_head_point
 
 def main():
-    starting_point = (2, 1)
-    starting_headto_point = (2, 2)
-    next_point, new_head_point = get_next_point(starting_point, starting_headto_point, 'move_forward')
-    print(next_point)
-    print(new_head_point)
+    starting_point = (0, 0)
+    starting_headto_point = (0, 1)
+    # next_point, new_head_point = get_next_point(starting_point, starting_headto_point, 'move_forward')
+    # print(next_point)
+    # print(new_head_point)
 
-    # destination_point = (4, 3)
+    destination_point = (3, 3)
     # # check validation of destination point
     # if not destination_point[0] in [0, 5] and not destination_point[1] in [0, 3]:
     #     print('invalid destination point.')
     #     return
     #
-    # command_list, path = run(starting_point, starting_headto_point, destination_point)
-    # print(command_list)
-    # print(path)
+    command_list, path = run(starting_point, starting_headto_point, destination_point)
+    print(command_list)
+    print(path)
 
 
 if __name__ == '__main__':

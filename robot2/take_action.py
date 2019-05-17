@@ -16,46 +16,49 @@ sound = Sound()
 color = ColorSensor()
 gyro = GyroSensor()
 
+def is_green(red, green, blue):
+    return red in range(0, 150) and green in range(150, 256) and blue in range(0, 150)
 
-def moveForward():
+
+def moveForward(time):
     print("move forward")
     tank_pair.on(left_speed=20, right_speed=20)
-    sleep(0.1)
+    sleep(time)
     tank_pair.off(brake=False)
     
 
-def moveBackward():
+def moveBackward(time):
     print("move backward")
     tank_pair.on(left_speed=-20, right_speed=-20)
-    sleep(0.1)
+    sleep(time)
     tank_pair.off(brake=False)
     
 
-def turnLeft():
+def turnLeft(time):
     print("turn left")
     tank_pair.on(left_speed=-20, right_speed=20)
-    sleep(0.1)
+    sleep(time)
     tank_pair.off(brake=False)
    
 
-def turnRight():
+def turnRight(time):
     print("turn right")
     tank_pair.on(left_speed=20, right_speed=-20)
-    sleep(0.1)
+    sleep(time)
     tank_pair.off(brake=False)
 
 
-def handUp():
+def handUp(time):
     print("hand up")
     motor.on(speed=10)
-    sleep(0.5)
+    sleep(time)
     motor.off(brake=False)
     
 
-def handDown():
+def handDown(time):
     print("hand down")
     motor.on(speed=-10)
-    sleep(0.5)
+    sleep(time)
     motor.off(brake=False)
     
 
@@ -85,12 +88,12 @@ def turn_degree(angle):
 
 
 def PIDControl():
-    expectation_red = 130
+    expectation_red = 95
     last_error = 0
-    kp = 0.1
+    kp = 0.05
     ki = 0
-    base_speed = 20
-    max_speed = 30
+    base_speed = 10
+    max_speed = 20
 
     # default = input("use default: ")
     # if default == 'y':
@@ -105,21 +108,24 @@ def PIDControl():
         red = color.rgb[0]
         green = color.rgb[1]
         blue = color.rgb[2]
+        print(red, green, blue)
+
+        # Stop if robot enter green area
+        if is_green(red, green, blue):
+            print('STOP !!!')
+            tank_pair.off(brake=True)
+            break
 
         # Stop if color sensor display no color
-        if red == 0:
-            print('STOP !!!')
-            tank_pair.off(brake=False)
-            break
+        # if red == 0:
+        #     print('STOP !!!')
+        #     tank_pair.off(brake=False)
+        #     break
         
-        # Stop if robot enter green area
-        if green in range(200, 256) and red in range(0, 150) and blue in range(0, 150):
-            print('STOP !!!')
-            tank_pair.off(brake=False)
-            break
-
         # Calculate for error parameters
         error = red - expectation_red
+        if error < 0:
+            error = error * 2
         delta_error = error - last_error
 
         last_error = error
@@ -145,11 +151,11 @@ def moveOutOfGreen():
         green = color.rgb[1]
         blue = color.rgb[2]
 
-        if green in range(200, 256) and red in range(0, 150) and blue in range(0, 150): 
+        if is_green(red, green, blue):
             tank_pair.on(left_speed=20, right_speed=20)
         else:
             print('STOP !!!')
-            tank_pair.off(brake=False)
+            tank_pair.off(brake=True)
             break
 
 
@@ -172,7 +178,7 @@ def command_robot(command):
         return True
     if command == "move_backward":
         moveOutOfGreen()
-        moveBackward()
+        moveBackward(0.1)
 
         turn_degree(-92)    # turn left
         turn_degree(-92)    # turn left
@@ -182,7 +188,7 @@ def command_robot(command):
         return True
     elif command == "move_left":
         moveOutOfGreen()
-        moveBackward()
+        moveBackward(0.1)
         
         turn_degree(-92)    # turn left
 
@@ -191,7 +197,7 @@ def command_robot(command):
         return True
     elif command == "move_right":
         moveOutOfGreen()
-        moveForward()
+        moveBackward(0.2)
 
         turn_degree(87)       # turn right
 
@@ -199,22 +205,20 @@ def command_robot(command):
         PIDControl()
         return True
     elif command == "pick":
-        handUp()
+        handUp(0.5)
     elif command == "drop":
-        moveForward()
-        handDown()
-        moveBackward()
+        handDown(0.5)
     elif command == "beep":
         # sound.beep()
         return True
     elif command == "turn_right":
         moveOutOfGreen()
-        moveForward()
+        moveBackward(0.2)
 
         turn_degree(87)       # turn right
     elif command == "turn_left":
         moveOutOfGreen()
-        moveBackward()
+        moveBackward(0.1)
         
         turn_degree(-92)    # turn left
     return False

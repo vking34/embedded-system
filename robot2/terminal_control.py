@@ -1,3 +1,7 @@
+# https://buildmedia.readthedocs.org/media/pdf/python-ev3dev/latest/python-ev3dev.pdf
+
+import readchar
+
 from ev3dev2.motor import MoveTank,MoveSteering, Motor, OUTPUT_A, OUTPUT_B, OUTPUT_D
 from ev3dev2.sensor.lego import ColorSensor, GyroSensor
 from ev3dev2.sound import Sound
@@ -15,6 +19,15 @@ sound = Sound()
 # Initial Sensor
 color = ColorSensor()
 gyro = GyroSensor()
+
+
+# class Gyro:
+#     def __init__(self):
+#         self.past_gyro = 0
+#         self.current_gyro = 0
+    
+#     def save_current_angle(self, angle):
+#         self.current_gyro 
 
 
 def moveForward():
@@ -57,7 +70,39 @@ def handDown():
     motor.on(speed=-10)
     sleep(0.5)
     motor.off(brake=False)
-    
+
+
+def displayColor():
+    red = color.rgb[0]
+    green = color.rgb[1]
+    blue = color.rgb[2]
+    print("Red: " + str(red) + ", Green: " + str(green) + ", Blue: " + str(blue))
+    print("Color: " + color.color_name)
+
+
+def displayAngle():
+    print("Angle: " + str(gyro.angle))
+
+
+def moveStraight():
+    past_gyro = gyro.angle
+    while True:
+        print("Current angle:  " + str(gyro.angle))
+        current_gyro = gyro.angle
+        changed_angle = current_gyro - past_gyro
+        print(changed_angle)
+
+        if changed_angle < -1:
+            tank_pair.on(left_speed=10, right_speed=0)
+        elif changed_angle > 1:
+            tank_pair.on(left_speed=0, right_speed=10)
+        else:
+            tank_pair.on(left_speed=20, right_speed=20)
+        
+        if color.color == 0:    # No color
+            tank_pair.off(brake=True)
+            break
+
 
 def turn_degree(angle):
     past_gyro = gyro.angle
@@ -92,14 +137,14 @@ def PIDControl():
     base_speed = 20
     max_speed = 30
 
-    # default = input("use default: ")
-    # if default == 'y':
-    #     pass
-    # else:
-    #     kp = float(input("enter p: "))
-    #     ki = float(input("enter i: "))
-    #     base_speed = int(input("enter base_speed: "))
-    #     max_speed = int(input("enter max_speed: "))
+    default = input("use default: ")
+    if default == 'y':
+        pass
+    else:
+        kp = float(input("enter p: "))
+        ki = float(input("enter i: "))
+        base_speed = int(input("enter base_speed: "))
+        max_speed = int(input("enter max_speed: "))
 
     while True:
         red = color.rgb[0]
@@ -151,75 +196,69 @@ def moveOutOfGreen():
             print('STOP !!!')
             tank_pair.off(brake=False)
             break
+ 
 
+def DummyControl():
+    while True:
+        red = color.rgb[0]
+        green = color.rgb[1]
+        blue = color.rgb[2]
+        print(red)
 
-def displayColor():
-    red = color.rgb[0]
-    green = color.rgb[1]
-    blue = color.rgb[2]
-    print("Red: " + str(red) + ", Green: " + str(green) + ", Blue: " + str(blue))
-    print("Color: " + color.color_name)
+        if red == 0:
+            print('STOP !!!')
+            tank_pair.off(brake=False)
+            break
 
-
-def displayAngle():
-    print("Angle: " + str(gyro.angle))
-
-
-def command_robot(command):
-    if command == "move_forward":
-        moveOutOfGreen()
-        PIDControl()
-        return True
-    if command == "move_backward":
-        moveOutOfGreen()
-        moveBackward()
-
-        turn_degree(-92)    # turn left
-        turn_degree(-92)    # turn left
-
-        moveOutOfGreen()
-        PIDControl()
-        return True
-    elif command == "move_left":
-        moveOutOfGreen()
-        moveBackward()
-        
-        turn_degree(-92)    # turn left
-
-        moveOutOfGreen()
-        PIDControl()
-        return True
-    elif command == "move_right":
-        moveOutOfGreen()
-        moveForward()
-
-        turn_degree(87)       # turn right
-
-        moveOutOfGreen()
-        PIDControl()
-        return True
-    elif command == "pick":
-        handUp()
-    elif command == "drop":
-        moveForward()
-        handDown()
-        moveBackward()
-    elif command == "beep":
-        # sound.beep()
-        return True
-    elif command == "turn_right":
-        moveOutOfGreen()
-        moveForward()
-
-        turn_degree(87)       # turn right
-    elif command == "turn_left":
-        moveOutOfGreen()
-        moveBackward()
-        
-        turn_degree(-92)    # turn left
-    return False
+        if red > 100:
+            tank_pair.on(left_speed=0, right_speed=5)
+        elif red < 90:
+            tank_pair.on(left_speed=5, right_speed=0)
+        else:
+            tank_pair.on(left_speed=5, right_speed=5)
 
 
 sound.beep()
 print("ROBOT READYYYYYY !!!!")
 print('version 3.0')
+while True:
+    command = readchar.readchar()
+    if command == "q":
+        break
+    # elif command == "w":
+    #     moveForward()
+    # elif command == "s":
+    #     moveBackward()
+    # elif command == "a":
+    #     turnLeft()
+    # elif command == "d":
+    #     turnRight()
+    elif command == "j":
+        handUp()
+    elif command == "k":
+        handDown()
+    elif command == "p":
+        sound.beep()
+    elif command == "0":
+        moveStraight()
+    elif command == "1":
+        displayColor()
+    elif command == "2":
+        displayAngle()
+    elif command == "3":
+        DummyControl()
+    elif command == "w":
+        moveOutOfGreen()
+        PIDControl()
+    elif command == "a":
+        moveOutOfGreen()
+        moveBackward()
+        turn_degree(-92)
+    elif command == "d":
+        moveOutOfGreen()
+        moveForward()
+        turn_degree(87)
+    elif command == "s":
+        moveBackward()
+    else:
+        continue
