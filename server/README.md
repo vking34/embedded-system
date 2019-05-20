@@ -28,9 +28,14 @@
     + Enter robot id
     + Choose either __Auto Mode__ or __Manual Mode__
         + Auto Mode:
+            + Enter RobotID
             + Enter Starting Point - the initial point of robot
             + Enter Head Point - the point right in front of robot. In other word, the init direction of robot is starting point -> head point.
                 + For example: Starting Point (0, 1) and Head Point (0, 2)
             + Enter Target Point - the destination point that robot go to and pick an object.
+            + Click "Submit"
         + Manual Mode:
-            + Command robot to do actions according to action list.
+            + Type Robot ID
+            + Enter Starting Point and Heading Point
+            + Click "Submit"
+            + Control robot using action buttons

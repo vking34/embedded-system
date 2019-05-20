@@ -1,12 +1,13 @@
 import sys
 import socketio
-
+from time import sleep
 
 sio = socketio.Client()
 
 # Change this base on host ip network address 
-host = '192.168.137.205'
+host = '192.168.1.245'
 port = '8080'
+print(host + ':' + port)
 
 robot = {}
 robot['id'] = sys.argv[1]   # unique robot id
@@ -52,11 +53,12 @@ def init_robot(data):
     robot['x'] = data.get('x_start_point')
     robot['y'] = data.get('y_start_point')
     response_object = get_robot_status()
-    sio.emit('robot_status', response_object)
+    # sio.emit('robot_status', response_object)
 
 
 @sio.on('server_command_robot')
 def process_command(request):
+    print('command from server: ', request.get('commands'))
     if robot['status'] == 0:
         # receive commands and move
         robot['status'] = 1
@@ -65,18 +67,17 @@ def process_command(request):
         
         commands = request.get('commands')
         print(">>> command from server: ", commands)
-        # direction, x_pos, y_pos = command_robot(command)
 
         for command in commands:
             command_robot(command)
 
         # After finish, send robot status to client
-        robot['status'] = 0
-
+        
         next_point = request.get('next_point')
         robot['x'] = next_point[0]
         robot['y'] = next_point[1]
-
+        
+        robot['status'] = 0
         response_object = get_robot_status()
         sio.emit('robot_status', response_object)
 

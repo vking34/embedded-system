@@ -15,11 +15,7 @@ socketio = SocketIO(app)
 status_dict = {}
 manual_dict = {}
 auto_dict = {}
-# command_list = list()
-# path = list()
-# current_index = 0   # current position : path[current_index]
-# is_picking = False
-# is_finished = False
+
 
 #======================================================================
 # Server get any connect or disconnect request, then update the online 
@@ -41,8 +37,6 @@ def disconnect():
     print(rooms())   
     emit('server_update_status', status_dict, broadcast=True)
     print('disconnected')
-
-#======================================================================
 
 
 # In auto mode, we have to initialize starting point, head point, and target point
@@ -72,12 +66,13 @@ def init_auto_point(data):
     head_point = (x_head_point, y_head_point)
     target_point = (x_target_point, y_target_point)
 
-    payload = {
-        'x_start_point': x_start_point,
-        'y_start_point': y_start_point
+    status_dict[robot_id] = {
+        'robot_x_pos': x_start_point,
+        'robot_y_pos': y_start_point,
+        'robot_status': 1
     }
 
-    emit('init_robot', payload, room=robot_id)
+    emit('server_update_status', status_dict, broadcast=True)
 
     # global current_index, path, command_list
 
@@ -129,26 +124,21 @@ def init_manual_point(data):
         'head_point': head_point
     }
 
+    status_dict[robot_id]['robot_x_pos'] = x_start_point
+    status_dict[robot_id]['robot_y_pos'] = y_start_point
 
-#=======================================================================
+    emit('server_update_status', status_dict, broadcast=True)
+
+
 # Server take request from client
-
 @socketio.on('client_command')
 def client_command(request):
     print('client command')
     robot_id = request.get('robot_id')
     commands = request.get('commands')
-
-    # commands = [command]
-
     print(request)
     command_robot_manual(commands, robot_id)
 
-#=======================================================================
-
-
-
-#======================================================================
 
 # for auto control
 def command_robot_auto(commands, next_point, robot_id):
@@ -177,12 +167,8 @@ def command_robot_manual(commands, robot_id):
     manual_dict[robot_id]['start_point'] = next_point
     manual_dict[robot_id]['head_point'] = new_head_point
 
-#======================================================================
 
-
-#=======================================================================
 # Server take request from robot
-
 @socketio.on('robot_status')
 def robot_update_status(request):
     # global current_index, path, command_list, is_picking, is_finished
@@ -201,7 +187,9 @@ def robot_update_status(request):
         'robot_y_pos': robot_y_pos,
         'robot_status': robot_status
     }
-    print('>>>>>>>>>>>>>>>>>>>>', status_dict)
+    print('robot: ', status_dict[robot_id])
+
+    # print('current point: ' + str((robot_x_pos, robot_y_pos)))
 
     emit('server_update_status', status_dict, broadcast=True)
 
@@ -216,16 +204,13 @@ def robot_update_status(request):
     is_picking = auto_dict[robot_id]['is_picking']
     is_finished = auto_dict[robot_id]['is_finished']
 
-    print(current_index)
     # When robot stop, command robot to go on
     if robot_status == 0:
         # not reach the destination yet
         path_length = len(path)
         if current_index < path_length - 1:
-
             current_index += 1
             auto_dict[robot_id]['current_index'] = current_index
-            print(current_index)
 
             try:
 
@@ -239,32 +224,28 @@ def robot_update_status(request):
             except IndexError:
                 return
 
-        # robot reached the destination and pick object
+        # robot reached the destination and picking the object
         elif current_index == path_length - 1:
             current_index += 1
             auto_dict[robot_id]['current_index'] = current_index
-            print(current_index)
             print('robot' + robot_id + ' reached destination')
+
+            # is_picking is True, robot has just dropped the object
             if is_picking is False:
                 commands = ['pick']
                 is_picking = True
                 auto_dict[robot_id]['is_picking'] = is_picking
-            else:
-                commands = ['drop']
-                is_finished = True
-                auto_dict[robot_id]['is_finished'] = is_finished
-
-            command_robot_auto(commands, path[current_index - 2], robot_id)
+                command_robot_auto(commands, path[current_index - 2], robot_id)
 
         # robot picked object and come back
         elif current_index == path_length:
             if is_finished is False:
-                print('come back...')
                 current_index = 0
                 auto_dict[robot_id]['current_index'] = current_index
                 path_length = len(path)
                 head_point = get_head_point(path[path_length - 1])
                 command_list, path = run(path[path_length-1], head_point, path[0])
+                command_list.append(['drop'])
                 auto_dict[robot_id]['command_list'] = command_list
                 auto_dict[robot_id]['path'] = path
                 print(command_list)
@@ -276,7 +257,7 @@ def robot_update_status(request):
 
 def generate_frame():
     # for external camera app
-    # camera_ip = '192.168.1.167'
+    # camera_ip = '192.168.137.181'
     # cap = cv2.VideoCapture('http://' + camera_ip + ':8080/video')
 
     # for webcam
@@ -284,6 +265,7 @@ def generate_frame():
 
     while True:
         ret, frame = cap.read()
+        frame = cv2.resize(frame, (600, 400))
 
         if not ret:
             print("Error: failed to capture image")

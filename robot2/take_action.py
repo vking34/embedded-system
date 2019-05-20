@@ -6,6 +6,8 @@ from time import sleep
 
 # Initial Motor
 tank_pair = MoveTank(OUTPUT_A, OUTPUT_D)
+motor1 = Motor(OUTPUT_A)
+motor2 = Motor(OUTPUT_B)
 steer_pair = MoveSteering(OUTPUT_A, OUTPUT_D)
 motor = Motor(OUTPUT_B) # small motor
 
@@ -15,9 +17,10 @@ sound = Sound()
 # Initial Sensor
 color = ColorSensor()
 gyro = GyroSensor()
+# gyro.mode = 
 
 def is_green(red, green, blue):
-    return red in range(0, 100) and green in range(100, 256) and blue in range(0, 100)
+    return red in range(0, 150) and green in range(150, 256) and blue in range(0, 150)
 
 
 def moveForward(time):
@@ -70,6 +73,7 @@ def turn_degree(angle):
     while True:
         current_gyro = gyro.angle
         changed_angle = current_gyro - past_gyro
+        # print(changed_angle)
 
         error = angle - changed_angle
         if error == 0:
@@ -90,10 +94,10 @@ def turn_degree(angle):
 def PIDControl():
     expectation_red = 80
     last_error = 0
-    kp = 0.05
+    kp = 0.09
     ki = 0
-    base_speed = 10
-    max_speed = 20
+    base_speed = 20
+    max_speed = 30
 
     # default = input("use default: ")
     # if default == 'y':
@@ -108,7 +112,7 @@ def PIDControl():
         red = color.rgb[0]
         green = color.rgb[1]
         blue = color.rgb[2]
-        print(red, green, blue)
+        # print(red, green, blue)
 
         # Stop if robot enter green area
         if is_green(red, green, blue):
@@ -172,6 +176,7 @@ def displayAngle():
 
 
 def command_robot(command):
+    sound.beep()
     if command == "move_forward":
         moveOutOfGreen()
         PIDControl()
@@ -180,39 +185,45 @@ def command_robot(command):
         moveOutOfGreen()
         moveBackward(0.1)
 
-        turn_degree(-92)    # turn left
-        turn_degree(-92)    # turn left
+        turn_degree(-187)    # turn left
 
         moveOutOfGreen()
         PIDControl()
         return True
     elif command == "pick":
+        moveForward(1)
         handUp(0.5)
-        moveOutOfGreen()
-        moveBackward(0.1)
+        moveBackward(1)
 
-        turn_degree(-92)    # turn left
-        turn_degree(-92)    # turn left
+        turn_degree(-187)    # turn left
+        return True
+
     elif command == "drop":
+        moveForward(1)
         handDown(0.5)
-        moveOutOfGreen()
-        moveBackward(0.1)
+        moveBackward(1)
 
-        turn_degree(-92)    # turn left
-        turn_degree(-92)    # turn left
+        turn_degree(-187)    # turn left
+        return True
+
     elif command == "beep":
         # sound.beep()
         return True
     elif command == "turn_right":
         moveOutOfGreen()
-        moveBackward(0.05)
+        # moveBackward(0.05)
 
-        turn_degree(87)       # turn right
+        turn_degree(88)       # turn right
+
+        return True
+
     elif command == "turn_left":
         moveOutOfGreen()
         moveBackward(0.15)
         
-        turn_degree(-92)    # turn left
+        turn_degree(-91)    # turn left
+
+        return True
     # elif command == "move_left":
     #     moveOutOfGreen()
     #     moveBackward(0.1)
