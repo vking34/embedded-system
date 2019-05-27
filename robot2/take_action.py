@@ -209,7 +209,7 @@ def command_robot(command):
     elif command == "beep":
         # sound.beep()
         return True
-    elif command == "turn_right":
+    elif command == "move_right":
         moveOutOfGreen()
         # moveBackward(0.05)
 
@@ -217,7 +217,7 @@ def command_robot(command):
 
         return True
 
-    elif command == "turn_left":
+    elif command == "move_left":
         moveOutOfGreen()
         moveBackward(0.15)
         
