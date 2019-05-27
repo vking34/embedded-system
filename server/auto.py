@@ -36,9 +36,9 @@ def get_command(current_direction, next_direction):
         (directions.WEST, directions.EAST), (directions.EAST, directions.WEST)]
 
     if (current_direction, next_direction) in move_left_combinations:
-        command = ['move_left', 'move_forward']
+        command = ['move_left']
     elif (current_direction, next_direction) in move_right_combinations:
-        command = ['move_right', 'move_forward']
+        command = ['move_right']
     elif (current_direction, next_direction) in go_straight_combinations:
         command = ['move_forward']
     elif (current_direction, next_direction) in go_backward_combinations:
@@ -109,24 +109,24 @@ def run(starting_point, starting_headto_point, target_point):
 
     if target_point[0] == 0: # direction when arrives need to be NORTH
         if current_direction == directions.EAST:
-            command_list.append(['move_left'])
+            command_list.append(['turn_left'])
         elif current_direction == directions.WEST:
-            command_list.append(['move_right'])
+            command_list.append(['turn_right'])
     elif target_point[0] == 5: # direction when arrives need to be SOUTH
         if current_direction == directions.EAST:
-            command_list.append(['move_right'])
+            command_list.append(['turn_right'])
         elif current_direction == directions.WEST:
-            command_list.append(['move_left'])
+            command_list.append(['turn_left'])
     elif target_point[1] == 3: # direction when arrives need to be EAST
         if current_direction == directions.NORTH:
-            command_list.append(['move_right'])
+            command_list.append(['turn_right'])
         elif current_direction == directions.SOUTH:
-            command_list.append(['move_left'])
+            command_list.append(['turn_left'])
     elif target_point[1] == 0: # direction when arrives need to be WEST
         if current_direction == directions.NORTH:
-            command_list.append(['move_left'])
+            command_list.append(['turn_left'])
         elif current_direction == directions.SOUTH:
-            command_list.append(['move_right'])
+            command_list.append(['turn_right'])
 
     return command_list, path
 
@@ -151,28 +151,28 @@ def get_head_point(start_point):
 
 
 def get_next_point(start_point, head_point, command):
-    if command == 'move_left' and start_point[0] == head_point[0] and start_point[1] > head_point[1]:
+    if command == 'turn_left' and start_point[0] == head_point[0] and start_point[1] > head_point[1]:
         next_point = (start_point[0] + 1, start_point[1])
         new_head_point = (start_point[0] + 2, start_point[1])
-    elif command == 'move_left' and start_point[0] == head_point[0] and start_point[1] < head_point[1]:
+    elif command == 'turn_left' and start_point[0] == head_point[0] and start_point[1] < head_point[1]:
         next_point = (start_point[0] - 1, start_point[1])
         new_head_point = (start_point[0] - 2, start_point[1])
-    elif command == 'move_left' and start_point[1] == head_point[1] and start_point[0] < head_point[0]:
+    elif command == 'turn_left' and start_point[1] == head_point[1] and start_point[0] < head_point[0]:
         next_point = (start_point[0], start_point[1] + 1)
         new_head_point = (start_point[0], start_point[1] + 2)
-    elif command == 'move_left' and start_point[1] == head_point[1] and start_point[0] > head_point[0]:
+    elif command == 'turn_left' and start_point[1] == head_point[1] and start_point[0] > head_point[0]:
         next_point = (start_point[0], start_point[1] - 1)
         new_head_point = (start_point[0], start_point[1] - 2)
-    elif command == 'move_right' and start_point[0] == head_point[0] and start_point[1] > head_point[1]:
+    elif command == 'turn_right' and start_point[0] == head_point[0] and start_point[1] > head_point[1]:
         next_point = (start_point[0] - 1, start_point[1])
         new_head_point = (start_point[0] - 2, start_point[1])
-    elif command == 'move_right' and start_point[0] == head_point[0] and start_point[1] < head_point[1]:
+    elif command == 'turn_right' and start_point[0] == head_point[0] and start_point[1] < head_point[1]:
         next_point = (start_point[0] + 1, start_point[1])
         new_head_point = (start_point[0] + 2, start_point[1])
-    elif command == 'move_right' and start_point[1] == head_point[1] and start_point[0] < head_point[0]:
+    elif command == 'turn_right' and start_point[1] == head_point[1] and start_point[0] < head_point[0]:
         next_point = (start_point[0], start_point[1] - 1)
         new_head_point = (start_point[0], start_point[1] - 2)
-    elif command == 'move_right' and start_point[1] == head_point[1] and start_point[0] > head_point[0]:
+    elif command == 'turn_right' and start_point[1] == head_point[1] and start_point[0] > head_point[0]:
         next_point = (start_point[0], start_point[1] + 1)
         new_head_point = (start_point[0], start_point[1] + 2)
     elif command == 'move_backward' and start_point[0] == head_point[0] and start_point[1] > head_point[1]:

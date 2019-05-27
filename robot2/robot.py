@@ -5,7 +5,7 @@ from time import sleep
 sio = socketio.Client()
 
 # Change this base on host ip network address 
-host = '192.168.1.245'
+host = '10.42.0.1'
 port = '8080'
 print(host + ':' + port)
 

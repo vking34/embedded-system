@@ -84,7 +84,7 @@ def init_auto_point(data):
 
     print('start point: ' + str(start_point))
     print('head point: ' + str(head_point))
-    command_list, path = run(start_point, head_point, target_point, dest_point)
+    command_list, path = run(start_point, head_point, target_point)
     current_index = 0
     auto_dict[robot_id] = {
         'command_list': command_list,
