@@ -1,3 +1,6 @@
 server/venv/
 robot/venv/
 server/demo.jpg
+.vscode
+__pycache__
+.idea
