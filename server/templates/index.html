@@ -1,13 +1,13 @@
 <html>
 <head>
     <title>Control Robot</title>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
     <div>
-        <img src="{{ url_for('video_feed') }}">
+        <img src="{{ url_for('video_feed') }}" style="width: 40%">
     </div>
     <div class="status">
         <h3>List robots</h3>
@@ -32,9 +32,6 @@
         <p>Target Point: </p>
         <input type="text" id="target_point" placeholder="x3,y3 (Map size : 3,5)">
         <br/>
-        <!-- <p>Destination Point: </p>
-        <input type="text" id="destination_point" placeholder="x4,y4 (Map size : 3,5)">
-        <br/> -->
         <button class="button" id="point_auto_submit">Submit</button>
         </div>
 
@@ -43,25 +40,18 @@
             <br>
             <button class="button" id="point_manual_submit">Submit</button>
             <br>
-            <div>
-                <button class="button" id="moveForward">Move Forward</button>
-                <button class="button" id="moveBackward">Move Backward</button>
-                <button class="button" id="moveRight">Move Right</button>
-                <button class="button" id="moveLeft">Move Left</button>
-                <button class="button" id="turnLeft">Turn Left</button>
-                <button class="button" id="turnRight">Turn Right</button>
-            </div>
-            <div>
-                <button class="button" id="pick">Pick object</button>
-                <button class="button" id="drop">Drop object</button>
-            </div>
-            
+            <button class="button" id="moveForward">Forward</button>
+            <button class="button" id="moveBackward">Backward</button>
+            <button class="button" id="turnLeft">Left</button>
+            <button class="button" id="turnRight">Right</button>
+            <button class="button" id="pick">Pick object</button>
+            <button class="button" id="drop">Drop object</button>
         </div>
     </div>
 
 <script type="text/javascript">
     $(document).ready(function() {
-        // Change this base on host ip network address 
+        // Change this base on host ip network address
         $('#manual_content').hide();
         var host = 'localhost';
         var port = '8080';
@@ -105,13 +95,11 @@
            start_point = $('#start_point').val();
            head_point = $('#head_point').val();
            target_point = $('#target_point').val();
-        //    dest_point = $('#destination_point').val();
            robot_id = $('#robot_id').val();
            let payload = {
                start_point,
                head_point,
                target_point,
-            //    dest_point,
                robot_id
            };
            socket.emit('init_auto_points', payload);
@@ -135,29 +123,11 @@
             socket.emit('client_command', request_object);
         });
 
-        $('#moveRight').on('click', function() {
-            robot_id = $('#robot_id').val();
-            request_object = {
-                'robot_id': robot_id, 
-                'commands': ['move_right']
-            };
-            socket.emit('client_command', request_object);
-        });
-
-        $('#moveLeft').on('click', function() {
-            robot_id = $('#robot_id').val();
-            request_object = {
-                'robot_id': robot_id, 
-                'commands': ['move_left']
-            };
-            socket.emit('client_command', request_object);
-        });
-
         $('#turnRight').on('click', function() {
             robot_id = $('#robot_id').val();
             request_object = {
-                'robot_id': robot_id, 
-                'commands': ['turn_right']
+                'robot_id': robot_id,
+                'commands': ['turn_right', 'move_forward']
             };
             socket.emit('client_command', request_object);
         });
@@ -165,8 +135,8 @@
         $('#turnLeft').on('click', function() {
             robot_id = $('#robot_id').val();
             request_object = {
-                'robot_id': robot_id, 
-                'commands': ['turn_left']
+                'robot_id': robot_id,
+                'commands': ['turn_left', 'move_forward']
             };
             socket.emit('client_command', request_object);
         });

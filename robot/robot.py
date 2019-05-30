@@ -10,14 +10,13 @@ port = '8080'
 print(host + ':' + port)
 
 robot = {}
-robot['id'] = sys.argv[1]   # unique robot id
+robot['id'] = sys.argv[1]  # unique robot id
 # robot['direction'] = 0  # 4 directions
 robot['x'] = 0
-robot['y'] = 0  
-robot['status'] = 0 # 0 is not busy, 1 is busy
+robot['y'] = 0
+robot['status'] = 0  # 0 is not busy, 1 is busy
 
 is_fake = sys.argv[2]
-
 
 if is_fake == 'fake':
     from fake_take_action import command_robot
@@ -34,6 +33,7 @@ def get_robot_status():
         'robot_status': robot['status']
     }
     return response_object
+
 
 @sio.on('connect')
 def on_connect():
@@ -64,7 +64,7 @@ def process_command(request):
         robot['status'] = 1
         response_object = get_robot_status()
         sio.emit('robot_status', response_object)
-        
+
         commands = request.get('commands')
         print(">>> command from server: ", commands)
 
@@ -72,15 +72,15 @@ def process_command(request):
             command_robot(command)
 
         # After finish, send robot status to client
-        
+
         next_point = request.get('next_point')
         robot['x'] = next_point[0]
         robot['y'] = next_point[1]
-        
+
         robot['status'] = 0
         response_object = get_robot_status()
         sio.emit('robot_status', response_object)
 
 
-sio.connect('http://'+host+':'+ port)
+sio.connect('http://' + host + ':' + port)
 sio.wait()

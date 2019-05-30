@@ -48,7 +48,6 @@ def init_auto_point(data):
     start_point = data.get('start_point')
     head_point = data.get('head_point')
     target_point = data.get('target_point')
-    dest_point = data.get('dest_point')
     robot_id = data.get('robot_id')
 
     xy_start_point = start_point.split(',')
@@ -63,14 +62,9 @@ def init_auto_point(data):
     x_target_point = int(xy_target_point[0])
     y_target_point = int(xy_target_point[1])
 
-    # xy_dest_point = dest_point.split(',')
-    # x_dest_point = int(xy_dest_point[0])
-    # y_dest_point = int(xy_dest_point[1])
-
     start_point = (x_start_point, y_start_point)
     head_point = (x_head_point, y_head_point)
     target_point = (x_target_point, y_target_point)
-    # dest_point = (x_dest_point, y_dest_point)
 
     status_dict[robot_id] = {
         'robot_x_pos': x_start_point,

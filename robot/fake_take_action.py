@@ -53,41 +53,71 @@ def command_robot(command):
         return True
     if command == "move_backward":
         moveOutOfGreen()
-        moveBackward()
+        moveBackward(0.1)
 
-        turn_degree(-92)    # turn left
-        turn_degree(-92)    # turn left
+        turn_degree(-187)
 
         moveOutOfGreen()
         PIDControl()
         return True
+    elif command == "pick":
+        moveOutOfGreen()
+        moveForward(1)
+        handUp(0.5)
+        moveBackward(1)
+
+        turn_degree(-187)
+        return True
+
+    elif command == "drop":
+        moveOutOfGreen()
+        moveForward(1)
+        handDown(0.5)
+        moveBackward(1)
+
+        turn_degree(-187)
+        return True
+
+    elif command == "beep":
+        # sound.beep()
+        return True
+
+    elif command == "turn_left":
+        moveOutOfGreen()
+        # moveBackward(0.15)
+        
+        turn_degree(-92)    # turn left
+
+        return True
+
+    elif command == "turn_right":
+        moveOutOfGreen()
+        # moveBackward(0.05)
+
+        turn_degree(88)       # turn right
+
+        return True
+
     elif command == "move_left":
         moveOutOfGreen()
-        moveBackward()
+        # moveBackward(0.1)
         
         turn_degree(-92)    # turn left
 
         moveOutOfGreen()
         PIDControl()
         return True
+
     elif command == "move_right":
         moveOutOfGreen()
-        moveForward()
+        # moveBackward(0.2)
 
         turn_degree(87)       # turn right
 
         moveOutOfGreen()
         PIDControl()
         return True
-    elif command == "pick":
-        handUp()
-    elif command == "drop":
-        moveForward()
-        handDown()
-        moveBackward()
-    elif command == "beep":
-        # sound.beep()
-        return True
+
     return False
 
 
