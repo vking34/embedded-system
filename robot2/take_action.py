@@ -27,42 +27,42 @@ def moveForward(time):
     print("move forward")
     tank_pair.on(left_speed=20, right_speed=20)
     sleep(time)
-    tank_pair.off(brake=False)
+    tank_pair.off(brake=True)
     
 
 def moveBackward(time):
     print("move backward")
     tank_pair.on(left_speed=-20, right_speed=-20)
     sleep(time)
-    tank_pair.off(brake=False)
+    tank_pair.off(brake=True)
     
 
 def turnLeft(time):
     print("turn left")
     tank_pair.on(left_speed=-20, right_speed=20)
     sleep(time)
-    tank_pair.off(brake=False)
+    tank_pair.off(brake=True)
    
 
 def turnRight(time):
     print("turn right")
     tank_pair.on(left_speed=20, right_speed=-20)
     sleep(time)
-    tank_pair.off(brake=False)
+    tank_pair.off(brake=True)
 
 
 def handUp(time):
     print("hand up")
     motor.on(speed=10)
     sleep(time)
-    motor.off(brake=False)
+    motor.off(brake=True)
     
 
 def handDown(time):
     print("hand down")
     motor.on(speed=-10)
     sleep(time)
-    motor.off(brake=False)
+    motor.off(brake=True)
     
 
 def turn_degree(angle):
@@ -191,6 +191,7 @@ def command_robot(command):
         PIDControl()
         return True
     elif command == "pick":
+        moveOutOfGreen()
         moveForward(1)
         handUp(0.5)
         moveBackward(1)
@@ -199,6 +200,7 @@ def command_robot(command):
         return True
 
     elif command == "drop":
+        moveOutOfGreen()
         moveForward(1)
         handDown(0.5)
         moveBackward(1)

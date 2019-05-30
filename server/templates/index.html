@@ -32,9 +32,9 @@
         <p>Target Point: </p>
         <input type="text" id="target_point" placeholder="x3,y3 (Map size : 3,5)">
         <br/>
-        <p>Destination Point: </p>
+        <!-- <p>Destination Point: </p>
         <input type="text" id="destination_point" placeholder="x4,y4 (Map size : 3,5)">
-        <br/>
+        <br/> -->
         <button class="button" id="point_auto_submit">Submit</button>
         </div>
 
@@ -105,13 +105,13 @@
            start_point = $('#start_point').val();
            head_point = $('#head_point').val();
            target_point = $('#target_point').val();
-           dest_point = $('#destination_point').val();
+        //    dest_point = $('#destination_point').val();
            robot_id = $('#robot_id').val();
            let payload = {
                start_point,
                head_point,
                target_point,
-               dest_point,
+            //    dest_point,
                robot_id
            };
            socket.emit('init_auto_points', payload);
