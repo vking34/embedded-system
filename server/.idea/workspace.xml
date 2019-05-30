@@ -2,11 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c53d139-88c4-4eee-87a4-76aa5baa67e5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robot/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robot/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robot/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robot/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robot/.idea/robot.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robot/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../robot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../robot/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../robot/fake_take_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/../robot/fake_take_action.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../robot/robot.py" beforeDir="false" afterPath="$PROJECT_DIR$/../robot/robot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../robot/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/server.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auto.py" beforeDir="false" afterPath="$PROJECT_DIR$/auto.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,8 +38,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-882">
-              <caret line="189" column="4" lean-forward="true" selection-start-line="189" selection-start-column="4" selection-end-line="189" selection-end-column="43" />
+            <state relative-caret-position="378">
+              <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
               <folding>
                 <element signature="e#0#50#0" expanded="true" />
               </folding>
@@ -50,11 +62,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="129" column="40" selection-start-line="129" selection-start-column="30" selection-end-line="129" selection-end-column="40" />
-              <folding>
-                <element signature="n#style#0;n#img#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="457">
+              <caret line="153" column="11" lean-forward="true" selection-start-line="153" selection-start-column="11" selection-end-line="153" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -71,8 +80,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/auto.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-656">
-              <caret line="152" column="4" selection-start-line="152" selection-start-column="4" selection-end-line="152" selection-end-column="4" />
+            <state relative-caret-position="378">
+              <caret line="166" column="57" lean-forward="true" selection-start-line="166" selection-start-column="57" selection-end-line="166" selection-end-column="57" />
             </state>
           </provider>
         </entry>
@@ -95,11 +104,11 @@
       <list>
         <option value="$PROJECT_DIR$/astar.py" />
         <option value="$PROJECT_DIR$/auto_server.py" />
-        <option value="$PROJECT_DIR$/auto.py" />
         <option value="$PROJECT_DIR$/static/css/main.css" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/app.py" />
         <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/auto.py" />
       </list>
     </option>
   </component>
@@ -116,7 +125,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -124,32 +132,11 @@
               <item name="server" type="b2602c69:ProjectViewProjectNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -157,7 +144,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../robot" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -172,14 +159,14 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="app" type="Python.FlaskServer" factoryName="Flask server">
+    <configuration name="server" type="Python.FlaskServer" factoryName="Flask server">
       <module name="server" />
       <option name="target" value="$PROJECT_DIR$/app.py" />
       <option name="targetType" value="PATH" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../../sockio_server/venv/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -209,18 +196,19 @@
       <workItem from="1558533817780" duration="12000" />
       <workItem from="1558668260856" duration="831000" />
       <workItem from="1558679415413" duration="6000" />
-      <workItem from="1559221832930" duration="9091000" />
+      <workItem from="1559221832930" duration="9255000" />
+      <workItem from="1559234301612" duration="1076000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="69238000" />
+    <option name="totallyTimeSpent" value="70478000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="0" width="1920" height="1080" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4985465" visible="true" weight="0.2588047" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4985465" visible="true" weight="0.2614728" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50145346" side_tool="true" weight="0.21991247" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -234,7 +222,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.2616034" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.2616034" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -270,13 +258,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -287,27 +268,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/auto.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-656">
-          <caret line="152" column="4" selection-start-line="152" selection-start-column="4" selection-end-line="152" selection-end-column="4" />
+        <state relative-caret-position="378">
+          <caret line="166" column="57" lean-forward="true" selection-start-line="166" selection-start-column="57" selection-end-line="166" selection-end-column="57" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="129" column="40" selection-start-line="129" selection-start-column="30" selection-end-line="129" selection-end-column="40" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="457">
+          <caret line="153" column="11" lean-forward="true" selection-start-line="153" selection-start-column="11" selection-end-line="153" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-882">
-          <caret line="189" column="4" lean-forward="true" selection-start-line="189" selection-start-column="4" selection-end-line="189" selection-end-column="43" />
+        <state relative-caret-position="378">
+          <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
           <folding>
             <element signature="e#0#50#0" expanded="true" />
           </folding>

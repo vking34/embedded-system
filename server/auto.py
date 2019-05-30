@@ -151,28 +151,28 @@ def get_head_point(start_point):
 
 
 def get_next_point(start_point, head_point, command):
-    if command == 'turn_left' and start_point[0] == head_point[0] and start_point[1] > head_point[1]:
+    if command == 'move_left' and start_point[0] == head_point[0] and start_point[1] > head_point[1]:
         next_point = (start_point[0] + 1, start_point[1])
         new_head_point = (start_point[0] + 2, start_point[1])
-    elif command == 'turn_left' and start_point[0] == head_point[0] and start_point[1] < head_point[1]:
+    elif command == 'move_left' and start_point[0] == head_point[0] and start_point[1] < head_point[1]:
         next_point = (start_point[0] - 1, start_point[1])
         new_head_point = (start_point[0] - 2, start_point[1])
-    elif command == 'turn_left' and start_point[1] == head_point[1] and start_point[0] < head_point[0]:
+    elif command == 'move_left' and start_point[1] == head_point[1] and start_point[0] < head_point[0]:
         next_point = (start_point[0], start_point[1] + 1)
         new_head_point = (start_point[0], start_point[1] + 2)
-    elif command == 'turn_left' and start_point[1] == head_point[1] and start_point[0] > head_point[0]:
+    elif command == 'move_left' and start_point[1] == head_point[1] and start_point[0] > head_point[0]:
         next_point = (start_point[0], start_point[1] - 1)
         new_head_point = (start_point[0], start_point[1] - 2)
-    elif command == 'turn_right' and start_point[0] == head_point[0] and start_point[1] > head_point[1]:
+    elif command == 'move_right' and start_point[0] == head_point[0] and start_point[1] > head_point[1]:
         next_point = (start_point[0] - 1, start_point[1])
         new_head_point = (start_point[0] - 2, start_point[1])
-    elif command == 'turn_right' and start_point[0] == head_point[0] and start_point[1] < head_point[1]:
+    elif command == 'move_right' and start_point[0] == head_point[0] and start_point[1] < head_point[1]:
         next_point = (start_point[0] + 1, start_point[1])
         new_head_point = (start_point[0] + 2, start_point[1])
-    elif command == 'turn_right' and start_point[1] == head_point[1] and start_point[0] < head_point[0]:
+    elif command == 'move_right' and start_point[1] == head_point[1] and start_point[0] < head_point[0]:
         next_point = (start_point[0], start_point[1] - 1)
         new_head_point = (start_point[0], start_point[1] - 2)
-    elif command == 'turn_right' and start_point[1] == head_point[1] and start_point[0] > head_point[0]:
+    elif command == 'move_right' and start_point[1] == head_point[1] and start_point[0] > head_point[0]:
         next_point = (start_point[0], start_point[1] + 1)
         new_head_point = (start_point[0], start_point[1] + 2)
     elif command == 'move_backward' and start_point[0] == head_point[0] and start_point[1] > head_point[1]:
